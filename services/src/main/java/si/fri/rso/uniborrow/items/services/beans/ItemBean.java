@@ -37,20 +37,101 @@ public class ItemBean {
         return item;
     }
 
-    public ItemEntity createLoan(ItemEntity loanEntity) {
+    public ItemEntity createItem(ItemEntity itemEntity) {
         try {
             beginTx();
-            em.persist(loanEntity);
+            em.persist(itemEntity);
             commitTx();
         }
         catch (Exception e) {
             rollbackTx();
         }
 
-        if (loanEntity.getId() == null) {
+        if (itemEntity.getId() == null) {
             throw new RuntimeException("Entity was not persisted");
         }
-        return loanEntity;
+        return itemEntity;
+    }
+
+    public Item putItem(Item item, Integer id) {
+        ItemEntity itemEntity = em.find(ItemEntity.class, id);
+        if (itemEntity == null) {
+            return null;
+        }
+
+        ItemEntity updatedItemEntity = ItemConverter.toEntity(item);
+        try {
+            beginTx();
+            updatedItemEntity.setId(itemEntity.getId());
+            updatedItemEntity = em.merge(updatedItemEntity);
+            commitTx();
+        } catch (Exception e) {
+            rollbackTx();
+            log.warning(e.getMessage());
+            return null;
+        }
+        return ItemConverter.toDto(updatedItemEntity);
+    }
+
+    public Item patchItem(Item item, Integer id) {
+        ItemEntity itemEntity = em.find(ItemEntity.class, id);
+        if (itemEntity == null) {
+            return null;
+        }
+
+        ItemEntity updatedItemEntity = ItemConverter.toEntity(item);
+        try {
+            beginTx();
+            if (updatedItemEntity.getCategory() == null) {
+                updatedItemEntity.setCategory(itemEntity.getCategory());
+            }
+            if (updatedItemEntity.getDescription() == null) {
+                updatedItemEntity.setDescription(itemEntity.getDescription());
+            }
+            if (updatedItemEntity.getTitle() == null) {
+                updatedItemEntity.setTitle(itemEntity.getTitle());
+            }
+            if (updatedItemEntity.getUserId() == null) {
+                updatedItemEntity.setUserId(itemEntity.getUserId());
+            }
+            if (updatedItemEntity.getScore() == null) {
+                updatedItemEntity.setScore(itemEntity.getScore());
+            }
+            if (updatedItemEntity.getStatus() == null) {
+                updatedItemEntity.setStatus(itemEntity.getStatus());
+            }
+            if (updatedItemEntity.getUri() == null) {
+                updatedItemEntity.setUri(itemEntity.getUri());
+            }
+            if (updatedItemEntity.getTimestamp() == null) {
+                updatedItemEntity.setTimestamp(itemEntity.getTimestamp());
+            }
+            updatedItemEntity.setId(itemEntity.getId());
+            updatedItemEntity = em.merge(updatedItemEntity);
+            commitTx();
+        } catch (Exception e) {
+            rollbackTx();
+            log.warning(e.getMessage());
+            return null;
+        }
+        return ItemConverter.toDto(updatedItemEntity);
+    }
+
+    public boolean deleteItem(Integer id) {
+        ItemEntity itemEntity = em.find(ItemEntity.class, id);
+        if (itemEntity == null) {
+            return false;
+        }
+        try {
+            beginTx();
+            em.remove(itemEntity);
+            commitTx();
+        } catch (Exception e) {
+            rollbackTx();
+            log.warning(e.getMessage());
+            return false;
+        }
+        return true;
     }
 
     private void beginTx() {

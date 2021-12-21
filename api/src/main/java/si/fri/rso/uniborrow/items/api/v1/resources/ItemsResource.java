@@ -2,14 +2,7 @@ package si.fri.rso.uniborrow.items.api.v1.resources;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -59,14 +52,46 @@ public class ItemsResource {
     }
 
     @POST
-    public Response createLoan(ItemEntity loanEntity) {
-        if (loanEntity.getTitle() == null ||
-                loanEntity.getDescription() == null || loanEntity.getUserId() == null
-                || loanEntity.getCategory() == null) {
+    public Response createItem(ItemEntity itemEntity) {
+        if (itemEntity.getTitle() == null ||
+                itemEntity.getDescription() == null || itemEntity.getUserId() == null
+                || itemEntity.getCategory() == null) {
             return Response.status(300).build();
         } else {
-            loanEntity = itemBean.createLoan(loanEntity);
+            itemEntity = itemBean.createItem(itemEntity);
         }
-        return Response.status(Response.Status.OK).entity(loanEntity).build();
+        return Response.status(Response.Status.OK).entity(itemEntity).build();
+    }
+
+    @PUT
+    @Path("{itemId}")
+    public Response updateItem(Item item, @PathParam("itemId") Integer itemId) {
+
+        item = itemBean.putItem(item, itemId);
+        if (item == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        return Response.status(Response.Status.OK).build();
+    }
+
+    @PATCH
+    @Path("{itemId}")
+    public Response patchItem(Item item, @PathParam("itemId") Integer itemId) {
+        item = itemBean.patchItem(item, itemId);
+        if (item == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        return Response.status(Response.Status.OK).build();
+    }
+
+    @DELETE
+    @Path("{itemId}")
+    public Response deleteItem(@PathParam("itemId") Integer itemId) {
+        boolean isSuccessful = itemBean.deleteItem(itemId);
+        if (isSuccessful) {
+            return Response.status(Response.Status.NO_CONTENT).build();
+        } else {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
     }
 }
