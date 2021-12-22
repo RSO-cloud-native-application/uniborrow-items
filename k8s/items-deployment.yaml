@@ -13,7 +13,7 @@ spec:
         app: items
     spec:
       containers:
-        - image: mp6079/items:2021-12-02-00-55-00
+        - image: mp6079/items:2021-12-22-06-08-54
           name: items
           env:
             - name: KUMULUZEE_DATASOURCES0_CONNECTIONURL
@@ -27,6 +27,10 @@ spec:
                   key: password
             - name: KUMULUZEE_CONFIG_CONSUL_AGENT
               value: http://consul-consul-server:8500/
+            - name: KUMULUZEE_DISCOVERY_CONSUL_AGENT
+              value: http://consul-consul-server:8500
+            - name: KUMULUZEE_DISCOVERY_CLUSTER
+              value: uniborrow-cluster
           ports:
             - containerPort: 8080
               name: server
@@ -52,7 +56,7 @@ kind: Service
 metadata:
   name: items
 spec:
-  type: LoadBalancer
+  type: ClusterIP
   ports:
     - port: 8080
       protocol: TCP
