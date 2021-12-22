@@ -9,12 +9,14 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import java.util.List;
 import java.util.logging.Logger;
+import com.kumuluz.ee.logs.cdi.Log;
 
 import si.fri.rso.uniborrow.items.lib.Item;
 import si.fri.rso.uniborrow.items.models.entities.ItemEntity;
 import si.fri.rso.uniborrow.items.services.beans.ItemBean;
 import si.fri.rso.uniborrow.items.services.config.RestProperties;
 
+@Log
 @ApplicationScoped
 @Path("/items")
 @Produces(MediaType.APPLICATION_JSON)

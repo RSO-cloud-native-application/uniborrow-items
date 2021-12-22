@@ -12,6 +12,18 @@ import javax.ws.rs.NotFoundException;
 import java.util.List;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+import org.eclipse.microprofile.faulttolerance.CircuitBreaker;
+import org.eclipse.microprofile.faulttolerance.Fallback;
+import org.eclipse.microprofile.faulttolerance.Timeout;
+
+import javax.annotation.PostConstruct;
+import javax.ws.rs.InternalServerErrorException;
+import javax.ws.rs.ProcessingException;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.core.GenericType;
+import java.time.temporal.ChronoUnit;
 
 @RequestScoped
 public class ItemBean {
@@ -20,6 +32,18 @@ public class ItemBean {
 
     @Inject
     private EntityManager em;
+
+    @Inject
+    private ItemBean itemBeanProxy;
+
+    private Client httpClient;
+    private String baseUrl;
+
+    @PostConstruct
+    private void init() {
+        httpClient = ClientBuilder.newClient();
+        baseUrl = "http://localhost:8081";
+    }
 
     public List<Item> getItems() {
         TypedQuery<ItemEntity> query =
