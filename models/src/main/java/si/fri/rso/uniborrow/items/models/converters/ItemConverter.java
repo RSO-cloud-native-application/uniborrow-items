@@ -8,7 +8,7 @@ public class ItemConverter {
     public static Item toDto(ItemEntity entity) {
 
         Item dto = new Item();
-        dto.setImageId(entity.getId());
+        dto.setItemId(entity.getId());
         dto.setTimestamp(entity.getTimestamp());
         dto.setDescription(entity.getDescription());
         dto.setTitle(entity.getTitle());

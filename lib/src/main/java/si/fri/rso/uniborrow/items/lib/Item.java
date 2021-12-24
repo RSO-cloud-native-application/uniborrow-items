@@ -79,12 +79,12 @@ public class Item {
         this.category = category;
     }
 
-    public Integer getImageId() {
+    public Integer getItemId() {
         return itemId;
     }
 
-    public void setImageId(Integer imageId) {
-        this.itemId = imageId;
+    public void setItemId(Integer itemId) {
+        this.itemId = itemId;
     }
 
     public Integer getNumberOfComments() {

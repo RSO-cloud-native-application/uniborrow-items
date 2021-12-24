@@ -13,22 +13,22 @@ spec:
         app: items
     spec:
       containers:
-        - image: mp6079/items:2021-12-22-19-01-49
+        - image: mp6079/items:2021-12-23-08-00-08
           name: items
           env:
             - name: KUMULUZEE_DATASOURCES0_CONNECTIONURL
-              value: jdbc:postgresql://abul.db.elephantsql.com:5432/qmsjftug
+              value: jdbc:postgresql://abul.db.elephantsql.com:5432/yhojegkl
             - name: KUMULUZEE_DATASOURCES0_USERNAME
-              value: qmsjftug
+              value: yhojegkl
             - name: KUMULUZEE_DATASOURCES0_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: uniborrow-items-db-pass
                   key: password
             - name: KUMULUZEE_CONFIG_CONSUL_AGENT
-              value: http://consul-consul-server:8500/
+              value: http://consul-server:8500
             - name: KUMULUZEE_DISCOVERY_CONSUL_AGENT
-              value: http://consul-consul-server:8500
+              value: http://consul-server:8500
             - name: KUMULUZEE_DISCOVERY_CLUSTER
               value: uniborrow-cluster
           ports:
