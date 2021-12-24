@@ -16,11 +16,11 @@ Available at: localhost:8080/v1/items
 
 ## Docker commands
 ```bash
-docker build -t items-catalog .   
+docker build -t items .   
 docker items
-docker run items-catalog    
-docker tag items-catalog mp6079/items-catalog   
-docker push mp6079/items-catalog  
+docker run items    
+docker tag items mp6079/items   
+docker push mp6079/items  
 ```
 
 ## Docker and environmental variables 
