@@ -13,7 +13,7 @@ spec:
         app: items
     spec:
       containers:
-        - image: mp6079/items:2021-12-24-19-25-11
+        - image: mp6079/items:2021-12-24-20-07-29
           name: items
           env:
             - name: KUMULUZEE_DATASOURCES0_CONNECTIONURL
