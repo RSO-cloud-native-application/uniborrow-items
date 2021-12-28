@@ -77,7 +77,7 @@
             </dependency>
 
             <dependency>
-                <artifactId>kumuluzee-logs-log4j2</artifactId>
+                <artifactId>kumuluzee-logs-jul</artifactId>
                 <groupId>com.kumuluz.ee.logs</groupId>
                 <version>${kumuluzee-logs.version}</version>
             </dependency>

@@ -4,7 +4,7 @@ import com.kumuluz.ee.common.config.EeConfig;
 import com.kumuluz.ee.common.runtime.EeRuntime;
 import com.kumuluz.ee.configuration.utils.ConfigurationUtil;
 import com.kumuluz.ee.logs.cdi.Log;
-import org.apache.logging.log4j.CloseableThreadContext;
+// import org.apache.logging.log4j.CloseableThreadContext;
 
 import javax.annotation.Priority;
 import javax.interceptor.AroundInvoke;
@@ -32,9 +32,8 @@ public class LogContextInterceptor {
 
         settings.put("uniqueRequestId", UUID.randomUUID().toString());
 
-        try (final CloseableThreadContext.Instance ctc = CloseableThreadContext.putAll(settings)) {
-            Object result = context.proceed();
-            return result;
-        }
+        Object result = context.proceed();
+        return result;
+
     }
 }
