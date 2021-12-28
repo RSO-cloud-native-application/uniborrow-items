@@ -45,7 +45,7 @@
         <dependency>
             <groupId>com.kumuluz.ee.logs</groupId>
             <artifactId>kumuluzee-logs-common</artifactId>
-            <version>1.4.2</version>
+            <version>${kumuluzee-logs.version}</version>
         </dependency>
 
         <dependency>
