@@ -29,7 +29,7 @@
 
         <dependency>
             <groupId>com.kumuluz.ee.config</groupId>
-            <artifactId>kumuluzee-config-consul</artifactId>
+            <artifactId>kumuluzee-config-etcd</artifactId>
         </dependency>
 
         <dependency>

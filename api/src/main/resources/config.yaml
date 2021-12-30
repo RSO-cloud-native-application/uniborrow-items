@@ -8,8 +8,8 @@ kumuluzee:
     http:
       port: 8080
   discovery:
-    consul:
-      hosts: http://localhost:8500
+    etcd:
+      hosts: http://localhost:2379
     ttl: 30
     ping-interval: 5
   datasources:
@@ -18,7 +18,12 @@ kumuluzee:
       username: dbuser
       password: postgres
       pool:
-        max-size: 20
+        max-size: 1
+  config:
+    etcd:
+      hosts: http://localhost:2379
+    start-retry-delay-ms: 500
+    max-retry-delay-ms: 900000
   health:
     checks:
       data-source-health-check:

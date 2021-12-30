@@ -13,7 +13,7 @@ spec:
         app: items
     spec:
       containers:
-        - image: mp6079/items:2021-12-29-03-20-13
+        - image: mp6079/items:2021-12-29-03-54-18
           name: items
           env:
             - name: KUMULUZEE_DATASOURCES0_CONNECTIONURL
@@ -25,12 +25,14 @@ spec:
                 secretKeyRef:
                   name: uniborrow-items-db-pass
                   key: password
-            - name: KUMULUZEE_CONFIG_CONSUL_AGENT
-              value: http://consul-server:8500/
-            - name: KUMULUZEE_DISCOVERY_CONSUL_AGENT
-              value: http://consul-server:8500
+            - name: KUMULUZEE_CONFIG_ETCD_HOSTS
+              value: http://etcd:2379
+            - name: KUMULUZEE_DISCOVERY_ETCD_HOSTS
+              value: http://etcd:2379
             - name: KUMULUZEE_DISCOVERY_CLUSTER
               value: uniborrow-cluster
+            - name: KUMULUZEE_SERVER_BASEURL
+              value: http://uniborrow-items:8080
           ports:
             - containerPort: 8080
               name: server
@@ -47,7 +49,6 @@ spec:
               port: server
             initialDelaySeconds: 20
             periodSeconds: 3
-
 
 ---
 
