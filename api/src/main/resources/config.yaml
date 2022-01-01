@@ -17,8 +17,6 @@ kumuluzee:
       connection-url: jdbc:postgresql://localhost:5432/items
       username: dbuser
       password: postgres
-      pool:
-        max-size: 1
   config:
     etcd:
       hosts: http://localhost:2379
@@ -29,8 +27,6 @@ kumuluzee:
       data-source-health-check:
         type: liveness
         jndi-name: jdbc/ItemsDB
-        pool:
-          max-size: 20
     metrics:
       web-instrumentation:
         - name: items-endpoint
