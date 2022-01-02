@@ -1,5 +1,7 @@
 package si.fri.rso.uniborrow.items.services.beans;
 
+import com.kumuluz.ee.rest.beans.QueryParameters;
+import com.kumuluz.ee.rest.utils.JPAUtils;
 import si.fri.rso.uniborrow.items.lib.Item;
 import si.fri.rso.uniborrow.items.models.converters.ItemConverter;
 import si.fri.rso.uniborrow.items.models.entities.ItemEntity;
@@ -21,6 +23,7 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.UriInfo;
 import java.time.temporal.ChronoUnit;
 
 @RequestScoped
@@ -36,6 +39,13 @@ public class ItemBean {
                 em.createNamedQuery("ItemEntity.getAll", ItemEntity.class);
         List<ItemEntity> resultList = query.getResultList();
         return resultList.stream().map(ItemConverter::toDto).collect(Collectors.toList());
+    }
+
+    public List<ItemEntity> getItemsFilter(UriInfo uriInfo) {
+        QueryParameters queryParameters = QueryParameters.query(uriInfo.getRequestUri().getQuery()).defaultOffset(0)
+                .build();
+
+        return JPAUtils.queryEntities(em, ItemEntity.class, queryParameters);
     }
 
     public Item getItem(Integer id) {

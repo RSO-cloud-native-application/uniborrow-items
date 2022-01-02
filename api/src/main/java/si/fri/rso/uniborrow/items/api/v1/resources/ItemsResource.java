@@ -32,9 +32,12 @@ public class ItemsResource {
     @Inject
     private RestProperties rp;
 
+    @Context
+    protected UriInfo uriInfo;
+
     @GET
     public Response getItems() {
-        List<Item> items = itemBean.getItems();
+        List<ItemEntity> items = itemBean.getItemsFilter(uriInfo);
         return Response.status(200).entity(items).build();
     }
 
@@ -60,6 +63,7 @@ public class ItemsResource {
                 || itemEntity.getCategory() == null) {
             return Response.status(300).build();
         } else {
+            itemEntity.setStatus("Available");
             itemEntity = itemBean.createItem(itemEntity);
         }
         return Response.status(Response.Status.OK).entity(itemEntity).build();
