@@ -15,9 +15,9 @@ import org.eclipse.microprofile.openapi.annotations.servers.Server;
                 version = "v1",
                 contact = @Contact(email = "mp6079@student.uni-lj.si"),
                 license = @License(name = "dev"),
-                description = "API for managing requests for Uniborrow application."
+                description = "API for managing items for Uniborrow application."
         ),
-        servers = @Server(url = "http://35.223.79.242/uniborrow-requests/")
+        servers = @Server(url = "http://35.223.79.242/uniborrow-items/")
 )
 @RegisterService(value = "uniborrow-items-service", environment = "dev", version = "1.0.0")
 @ApplicationPath("/v1")
