@@ -9,12 +9,15 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import java.util.List;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
+
 import com.kumuluz.ee.logs.cdi.Log;
 
 import si.fri.rso.uniborrow.items.lib.Item;
 import si.fri.rso.uniborrow.items.models.entities.ItemEntity;
 import si.fri.rso.uniborrow.items.services.beans.ItemBean;
 import si.fri.rso.uniborrow.items.services.config.RestProperties;
+import si.fri.rso.uniborrow.items.services.recognition.ImageRecognitionService;
 
 @Log
 @ApplicationScoped
@@ -32,6 +35,9 @@ public class ItemsResource {
     @Inject
     private RestProperties rp;
 
+    @Inject
+    private ImageRecognitionService irs;
+
     @Context
     protected UriInfo uriInfo;
 
@@ -48,7 +54,6 @@ public class ItemsResource {
         if (item == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
-        System.out.println(rp.getMaintenanceMode());
 
         if (rp.getMaintenanceMode()) {
             return Response.status(Response.Status.NOT_FOUND).build();
@@ -63,6 +68,8 @@ public class ItemsResource {
                 || itemEntity.getCategory() == null) {
             return Response.status(300).build();
         } else {
+            List<String> listOfTags = irs.getTags(itemEntity.getUri());
+            itemEntity.setDescription(itemEntity.getDescription() + "\n\nTags: " + listOfTags.stream().collect(Collectors.joining(", ")));
             itemEntity.setStatus("Available");
             itemEntity = itemBean.createItem(itemEntity);
         }
