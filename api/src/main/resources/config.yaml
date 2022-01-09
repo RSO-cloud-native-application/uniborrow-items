@@ -31,6 +31,17 @@ kumuluzee:
       web-instrumentation:
         - name: items-endpoint
           url-pattern: /v1/items/*
+  openapi-mp:
+    enabled: true
+    servlet:
+      mapping: /uniborrow-items/openapi
+    ui:
+      enabled: true
+      mapping: /uniborrow-items/openapi/ui
+      specification-server: http://35.223.79.242
+    dev:
+      scan-libraries:
+        - items-models
   logs:
     config-file: '<?xml version="1.0" encoding="UTF-8"?>
                             <Configuration name="comments">

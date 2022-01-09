@@ -19,6 +19,15 @@ import si.fri.rso.uniborrow.items.services.beans.ItemBean;
 import si.fri.rso.uniborrow.items.services.config.RestProperties;
 import si.fri.rso.uniborrow.items.services.recognition.ImageRecognitionService;
 
+import org.eclipse.microprofile.openapi.annotations.Operation;
+import org.eclipse.microprofile.openapi.annotations.enums.SchemaType;
+import org.eclipse.microprofile.openapi.annotations.media.Content;
+import org.eclipse.microprofile.openapi.annotations.media.Schema;
+import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
+import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
+
 @Log
 @ApplicationScoped
 @Path("/items")
@@ -42,12 +51,36 @@ public class ItemsResource {
     protected UriInfo uriInfo;
 
     @GET
+    @Operation(description = "Get items by filter, or all.", summary = "Get items by filter, or all.")
+    @APIResponses({
+            @APIResponse(
+                    responseCode = "200",
+                    description = "Items that fit the filter.",
+                    content = @Content(schema = @Schema(implementation = ItemEntity.class, type = SchemaType.ARRAY))
+            ),
+            @APIResponse(
+                    responseCode = "404",
+                    description = "No items found."
+            )
+    })
     public Response getItems() {
         List<ItemEntity> items = itemBean.getItemsFilter(uriInfo);
         return Response.status(200).entity(items).build();
     }
 
     @GET
+    @Operation(description = "Get item by id.", summary = "Get item by id.")
+    @APIResponses({
+            @APIResponse(
+                    responseCode = "200",
+                    description = "Item by id.",
+                    content = @Content(schema = @Schema(implementation = ItemEntity.class))
+            ),
+            @APIResponse(
+                    responseCode = "404",
+                    description = "Item with id not found."
+            )
+    })
     @Path("/{itemId}")
     public Response getItem(@PathParam("itemId") Integer itemId) {
         Item item = itemBean.getItem(itemId);
@@ -62,6 +95,18 @@ public class ItemsResource {
     }
 
     @POST
+    @Operation(description = "Create new item.", summary = "Create new item.")
+    @APIResponses({
+            @APIResponse(
+                    responseCode = "200",
+                    description = "CreatedRequest",
+                    content = @Content(schema = @Schema(implementation = ItemEntity.class))
+            ),
+            @APIResponse(
+                    responseCode = "400",
+                    description = "Problems with item body."
+            )
+    })
     public Response createItem(ItemEntity itemEntity) {
         if (itemEntity.getTitle() == null ||
                 itemEntity.getDescription() == null || itemEntity.getUserId() == null
@@ -78,6 +123,18 @@ public class ItemsResource {
 
     @PUT
     @Path("{itemId}")
+    @Operation(description = "Edit a item.", summary = "Edit a item.")
+    @APIResponses({
+            @APIResponse(
+                    responseCode = "200",
+                    description = "Edited item",
+                    content = @Content(schema = @Schema(implementation = ItemEntity.class))
+            ),
+            @APIResponse(
+                    responseCode = "400",
+                    description = "Problems with item body."
+            )
+    })
     public Response updateItem(Item item, @PathParam("itemId") Integer itemId) {
 
         item = itemBean.putItem(item, itemId);
@@ -89,6 +146,18 @@ public class ItemsResource {
 
     @PATCH
     @Path("{itemId}")
+    @Operation(description = "Patch a item.", summary = "Item a request.")
+    @APIResponses({
+            @APIResponse(
+                    responseCode = "200",
+                    description = "Patched item",
+                    content = @Content(schema = @Schema(implementation = ItemEntity.class))
+            ),
+            @APIResponse(
+                    responseCode = "400",
+                    description = "Problems with item body."
+            )
+    })
     public Response patchItem(Item item, @PathParam("itemId") Integer itemId) {
         item = itemBean.patchItem(item, itemId);
         if (item == null) {
@@ -99,6 +168,17 @@ public class ItemsResource {
 
     @DELETE
     @Path("{itemId}")
+    @Operation(description = "Delete a item.", summary = "Delete a item.")
+    @APIResponses({
+            @APIResponse(
+                    responseCode = "200",
+                    description = "Item deleted."
+            ),
+            @APIResponse(
+                    responseCode = "404",
+                    description = "Item not found."
+            )
+    })
     public Response deleteItem(@PathParam("itemId") Integer itemId) {
         boolean isSuccessful = itemBean.deleteItem(itemId);
         if (isSuccessful) {
