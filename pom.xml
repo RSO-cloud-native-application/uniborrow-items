@@ -99,7 +99,7 @@
             <dependency>
                 <artifactId>kumuluzee-logs-log4j2</artifactId>
                 <groupId>com.kumuluz.ee.logs</groupId>
-                <version>2.17.1</version>
+                <version>{kumuluzee-logs.version}</version>
             </dependency>
 
             <dependency>
