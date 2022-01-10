@@ -27,6 +27,8 @@ kumuluzee:
       data-source-health-check:
         type: liveness
         jndi-name: jdbc/ItemsDB
+      etcd-health-check:
+        connection-url: http://localhost:2379/health
     metrics:
       web-instrumentation:
         - name: items-endpoint
@@ -41,7 +43,7 @@ kumuluzee:
       specification-server: http://35.223.79.242
     dev:
       scan-libraries:
-        - items-models
+        - items-lib
   logs:
     config-file: '<?xml version="1.0" encoding="UTF-8"?>
                             <Configuration name="comments">
