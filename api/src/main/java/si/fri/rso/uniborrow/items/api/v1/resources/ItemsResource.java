@@ -18,13 +18,14 @@ import si.fri.rso.uniborrow.items.models.entities.ItemEntity;
 import si.fri.rso.uniborrow.items.services.beans.ItemBean;
 import si.fri.rso.uniborrow.items.services.config.RestProperties;
 import si.fri.rso.uniborrow.items.services.recognition.ImageRecognitionService;
+import org.eclipse.microprofile.metrics.annotation.Counted;
+import org.eclipse.microprofile.metrics.annotation.Timed;
 
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.enums.SchemaType;
 import org.eclipse.microprofile.openapi.annotations.media.Content;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
-import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
-import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
+
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
 
@@ -51,6 +52,7 @@ public class ItemsResource {
     protected UriInfo uriInfo;
 
     @GET
+    @Timed(name = "get_items_time")
     @Operation(description = "Get items by filter, or all.", summary = "Get items by filter, or all.")
     @APIResponses({
             @APIResponse(
@@ -95,6 +97,7 @@ public class ItemsResource {
     }
 
     @POST
+    @Counted(name = "num_created_items")
     @Operation(description = "Create new item.", summary = "Create new item.")
     @APIResponses({
             @APIResponse(
@@ -114,7 +117,9 @@ public class ItemsResource {
             return Response.status(300).build();
         } else {
             List<String> listOfTags = irs.getTags(itemEntity.getUri());
-            itemEntity.setDescription(itemEntity.getDescription() + "\n\nTags: " + listOfTags.stream().collect(Collectors.joining(", ")));
+            if (listOfTags != null) {
+                itemEntity.setDescription(itemEntity.getDescription() + "\n\nTags: " + listOfTags.stream().collect(Collectors.joining(", ")));
+            }
             itemEntity.setStatus("Available");
             itemEntity = itemBean.createItem(itemEntity);
         }
@@ -167,6 +172,7 @@ public class ItemsResource {
     }
 
     @DELETE
+    @Counted(name = "num_deleted_items")
     @Path("{itemId}")
     @Operation(description = "Delete a item.", summary = "Delete a item.")
     @APIResponses({

@@ -10,10 +10,10 @@ spec:
   template:
     metadata:
       labels:
-        app: uniborrow-litems
+        app: uniborrow-items
     spec:
       containers:
-        - image: mp6079/items:2022-01-10-05-26-40
+        - image: mp6079/items:2022-01-11-01-17-53
           name: items
           env:
             - name: KUMULUZEE_DATASOURCES0_CONNECTIONURL

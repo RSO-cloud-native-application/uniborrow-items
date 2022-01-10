@@ -13,10 +13,12 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
-import java.util.stream.Stream;
+import org.eclipse.microprofile.faulttolerance.CircuitBreaker;
+import org.eclipse.microprofile.faulttolerance.Fallback;
+import org.eclipse.microprofile.faulttolerance.Timeout;
+import java.time.temporal.ChronoUnit;
 
 import java.util.logging.Logger;
-
 
 @ApplicationScoped
 public class ImageRecognitionService {
@@ -24,6 +26,9 @@ public class ImageRecognitionService {
     private static final Logger LOG = Logger.getLogger(ItemBean.class
             .getSimpleName());
 
+    @CircuitBreaker
+    @Timeout(value = 5, unit = ChronoUnit.SECONDS)
+    @Fallback(fallbackMethod = "getTagsFallback")
     public List<String> getTags(String imgUrl) {
         try {
             String credentialsToEncode = "acc_8f2f7d39a41f16f" + ":" + "14f65a65fa9bdf6e7db47cfeaa8652f0";
@@ -62,6 +67,11 @@ public class ImageRecognitionService {
         catch(Exception e) {
             LOG.severe(e.getMessage());
         }
+        return null;
+    }
+
+    public List<String> getTagsFallback(String imgUrl) {
+        LOG.info("Imagga API not available.");
         return null;
     }
 
