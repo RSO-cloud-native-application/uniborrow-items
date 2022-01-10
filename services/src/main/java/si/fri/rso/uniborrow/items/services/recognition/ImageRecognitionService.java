@@ -15,12 +15,13 @@ import java.util.Base64;
 import java.util.List;
 import java.util.stream.Stream;
 
-import org.apache.logging.log4j.Logger;
+import java.util.logging.Logger;
+
 
 @ApplicationScoped
 public class ImageRecognitionService {
 
-    private static final Logger LOG = org.apache.logging.log4j.LogManager.getLogger(ItemBean.class
+    private static final Logger LOG = Logger.getLogger(ItemBean.class
             .getSimpleName());
 
     public List<String> getTags(String imgUrl) {
@@ -59,7 +60,7 @@ public class ImageRecognitionService {
 
         }
         catch(Exception e) {
-            LOG.error(e.getMessage());
+            LOG.severe(e.getMessage());
         }
         return null;
     }
